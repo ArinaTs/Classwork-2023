@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Laba_turagenstvo", "..\Laba
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Rational", "..\Rational\Rational.vcxproj", "{30CB9381-0055-4F1C-B1C8-04DCF5F83FF7}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Character", "..\Character\Character.vcxproj", "{3D87CCBF-BE3C-4D6D-B21A-2DFAC6C952E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -61,6 +63,14 @@ Global
 		{30CB9381-0055-4F1C-B1C8-04DCF5F83FF7}.Release|x64.Build.0 = Release|x64
 		{30CB9381-0055-4F1C-B1C8-04DCF5F83FF7}.Release|x86.ActiveCfg = Release|Win32
 		{30CB9381-0055-4F1C-B1C8-04DCF5F83FF7}.Release|x86.Build.0 = Release|Win32
+		{3D87CCBF-BE3C-4D6D-B21A-2DFAC6C952E5}.Debug|x64.ActiveCfg = Debug|x64
+		{3D87CCBF-BE3C-4D6D-B21A-2DFAC6C952E5}.Debug|x64.Build.0 = Debug|x64
+		{3D87CCBF-BE3C-4D6D-B21A-2DFAC6C952E5}.Debug|x86.ActiveCfg = Debug|Win32
+		{3D87CCBF-BE3C-4D6D-B21A-2DFAC6C952E5}.Debug|x86.Build.0 = Debug|Win32
+		{3D87CCBF-BE3C-4D6D-B21A-2DFAC6C952E5}.Release|x64.ActiveCfg = Release|x64
+		{3D87CCBF-BE3C-4D6D-B21A-2DFAC6C952E5}.Release|x64.Build.0 = Release|x64
+		{3D87CCBF-BE3C-4D6D-B21A-2DFAC6C952E5}.Release|x86.ActiveCfg = Release|Win32
+		{3D87CCBF-BE3C-4D6D-B21A-2DFAC6C952E5}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
