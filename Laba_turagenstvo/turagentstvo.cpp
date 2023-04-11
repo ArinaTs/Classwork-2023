@@ -7,13 +7,15 @@
 #include <windows.h>
 #include <conio.h>
 
+#include <map>
+
 //система классов, объявить поля и методы
 //Турагентство. Путевка турагентства. ФИО, телефон, домашний адрес туриста, адрес и стоимость маршрута поездки, дата отправления, стоимость путевки + название, адрес и e-mail турагентства
 //ФИО, телефон, домашний адрес
 class FIO {
-	const std::string name;
-	const std::string surname;
-	const std::string middle_name;
+	std::string name;
+	std::string surname;
+	std::string middle_name;
 public:
 	FIO() : name("x"), surname("y"), middle_name("z") {}
 	FIO(std::string _name, std::string _surname, std::string _middle_name) : name(_name), surname(_surname), middle_name(_middle_name) {}
@@ -23,38 +25,47 @@ public:
 		return (this->name == p.name && this->surname == p.surname && this->middle_name == p.middle_name);
 	}
 	bool operator<(const FIO& p) const {
-		return (this->surname < p.surname);
+		if (this->surname < p.surname)
+		  return true;
+
 	};
 	bool operator>(const FIO& p) const {
-		return (this->surname < p.surname);
+		return (this->surname > p.surname);
 	};
 	friend std::ostream& operator<<(std::ostream& out, const FIO&);
-	friend std::istream& operator>>(std::istream&in, const FIO&);
+	friend std::istream& operator>>(std::istream&in, FIO&);
 };
 std::ostream& operator<<(std::ostream& out, const FIO& p) {
-	out << "(" << p.name << ", " << p.surname << ", " << p.middle_name << ")";
+	out << p.name << " " << p.surname << " " << p.middle_name;
 };
-std::istream& operator>>(std::istream& in, const FIO& p) {
-	in >> "(" >> p.name >> ", " >> p.surname >> ", " >> p.middle_name >> ")";
+std::istream& operator>>(std::istream& in, FIO& p) {
+	in >> p.name >> p.surname >> p.middle_name;
 };
 
+class Phone {
+	int number[11]; // 8 9 9 9 9 9 9 9 9 9 9
+public:
+	Phone(long int number_) {}
+	~Phone() { /*delete[] number;*/ }
+
+	friend std::ostream& operator<<(std::ostream& out, const Phone& p); // +7(999)999-99-99
+	friend std::istream& operator>>(std::istream& in, Phone& p);
+};
 
 class Contact {
-	int* phone;
-	int size;
+	Phone phone;
 	std::string country;
 	std::string city;
 	std::string street;
 	int num_of_house;
 public:
 	Contact();
-	Contact(int* _phone,int _size, std::string _country, std::string _city, std::string _street, int _num_of_house);
+	Contact(long int _phone, int _size, std::string _country, std::string _city, std::string _street, int _num_of_house) : phone(_phone) {}
 	Contact(Contact& cont);
-	~Contact() {
-		delete[] phone;
-	}
-	bool operator==(const Contact&p) const {
-		return (this->city == p.city);
+	~Contact() {}
+
+	bool checkByCity(std::string _city) const {
+		return (this->city == _city);
 	};
 	bool operator<(const Contact&p) const {
 		return (this->city < p.city);
@@ -105,9 +116,40 @@ Contact::Contact(Contact &cont) {
 	num_of_house = cont.num_of_house;
 }
 
-class Tourist : FIO {
+class Tourist  {
 	FIO nam_sur_mid;
 	Contact adress;
+	Travel** hisTrevels;
+	int size;
+	void addNewTrevel(Travel* it) {
+		// hisTrevels очистить
+		// hisTrevels выделить на 1 больше памяти
+		// перенести значения
+		size = size + 1;
+		hisTrevels[size - 1] = it;
+	}
+};
+
+class ClientBase {
+	Tourist* all;
+	int count;
+
+	Tourist& findInCity(std::string _city) {
+		for () {
+			all[i].checkByCity(_city);
+		}
+	}
+};
+
+std::map<int, int> months = { //map.find(this->month) для вычиления даты окончания поездки
+	{ 1, 31 },
+	{ 2, 28 },
+	{ 3, 31 }, 
+	{ 4, 30 },
+	{ 5, 31 },
+	{ 6, 30 },
+	{ 7, 31 },
+	{ 8, 31 },
 };
 
 //адрес и протяженность маршрута поездки, дата отправления, стоимость путевки
@@ -129,20 +171,24 @@ public:
 	bool operator>(const Date& d) const {
 		return (this->day > d.day && this->month > d.month && this->year > d.year);
 	};
+	//+(int)
 	friend std::ostream& operator<<(std::ostream& out, const Date&d);
 	friend std::istream& operator>>(std::istream& in, const Date&d);
 };
 std::ostream& operator<<(std::ostream& out, const Date& d) {
 	out << "(" << d.day << ", " << d.month << ", " << d.year << ")";
 };
-std::istream& operator>>(std::istream& in, const Date& d) {
+std::istream& operator>>(std::istream& in, Date& d) {
 	in >> "(" >> d.day >> ", " >> d.month >> ", " >> d.year >> ")";
 };
 
-class Travel : public Date {
+class Travel {
 	std::string country_to;
 	int dist;
 	int cost;
+	Date date;
+	int prodolzh;
+	int status;
 public:
 	Travel(): country_to("Japan"), dist(7000), cost(100000) {}
 	Travel(int _day, std::string _month, int _year, std::string _country_to, int _dist, int _cost) : Date(_day, _month, _year), country_to(_country_to), dist(_dist), cost(_cost) {}
@@ -159,6 +205,21 @@ public:
 	friend std::ostream& operator<<(std::ostream& out, const Travel& t);
 	friend std::istream& operator>>(std::istream& in, const Travel& t);
 };
+
+
+class Travels {
+	Travel** all;
+	int size;
+	int count;
+	void add(int _day, std::string _month, int _year, std::string _country_to, int _dist, int _cost) {
+		Travel new_travel = new Travel(_day, _month, _year, _country_to, _dist, _cost);
+		all[count] = &new_travel;
+		count++;
+	}
+	Travel* find(int start, int _day, std::string _month, int _year, std::string _country_to) {}
+};
+
+
 std::ostream& operator<<(std::ostream& out, const Travel& t) {
 	out << "(" << t.country_to << ", " << t.dist << ", " << t.cost << ")";
 };
