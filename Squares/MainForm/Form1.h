@@ -107,6 +107,7 @@ namespace CppCLRWinformsProjekt {
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
+			this->checkBox2 = (gcnew System::Windows::Forms::CheckBox());
 			this->checkBox1 = (gcnew System::Windows::Forms::CheckBox());
 			this->resInt = (gcnew System::Windows::Forms::TextBox());
 			this->resNum = (gcnew System::Windows::Forms::TextBox());
@@ -126,7 +127,6 @@ namespace CppCLRWinformsProjekt {
 			this->FindSum = (gcnew System::Windows::Forms::Button());
 			this->FindMult = (gcnew System::Windows::Forms::Button());
 			this->FindSub = (gcnew System::Windows::Forms::Button());
-			this->checkBox2 = (gcnew System::Windows::Forms::CheckBox());
 			this->groupBox1->SuspendLayout();
 			this->groupBox2->SuspendLayout();
 			this->SuspendLayout();
@@ -307,6 +307,15 @@ namespace CppCLRWinformsProjekt {
 			this->groupBox2->TabStop = false;
 			this->groupBox2->Text = L"Главное меню";
 			// 
+			// checkBox2
+			// 
+			this->checkBox2->AutoSize = true;
+			this->checkBox2->Location = System::Drawing::Point(205, 47);
+			this->checkBox2->Name = L"checkBox2";
+			this->checkBox2->Size = System::Drawing::Size(15, 14);
+			this->checkBox2->TabIndex = 23;
+			this->checkBox2->UseVisualStyleBackColor = true;
+			// 
 			// checkBox1
 			// 
 			this->checkBox1->AutoSize = true;
@@ -357,6 +366,7 @@ namespace CppCLRWinformsProjekt {
 			this->Integer->TabIndex = 18;
 			this->Integer->Text = L"Выделить целую часть";
 			this->Integer->UseVisualStyleBackColor = true;
+			this->Integer->Click += gcnew System::EventHandler(this, &Form1::Integer_Click);
 			// 
 			// Easy
 			// 
@@ -490,15 +500,6 @@ namespace CppCLRWinformsProjekt {
 			this->FindSub->Text = L"Вычесть";
 			this->FindSub->UseVisualStyleBackColor = true;
 			this->FindSub->Click += gcnew System::EventHandler(this, &Form1::FindSub_Click);
-			// 
-			// checkBox2
-			// 
-			this->checkBox2->AutoSize = true;
-			this->checkBox2->Location = System::Drawing::Point(205, 47);
-			this->checkBox2->Name = L"checkBox2";
-			this->checkBox2->Size = System::Drawing::Size(15, 14);
-			this->checkBox2->TabIndex = 23;
-			this->checkBox2->UseVisualStyleBackColor = true;
 			// 
 			// Form1
 			// 
@@ -685,6 +686,25 @@ namespace CppCLRWinformsProjekt {
 			resNum->Text = (Easy.getNumerator()).ToString();
 			resDenom->Text = (Easy.getDenominator()).ToString();
 		}
+		else if (checkBox2->Checked) {
+			if (num2->Text == "" || denom2->Text == "")
+			{
+				MessageBox::Show(this, "Заполнены не все поля дроби!", "Сообщение",
+					MessageBoxButtons::OK, MessageBoxIcon::Warning);
+			}
+			else if (int2->Text == "") {
+				int2->Text = "0";
+			}
+			RationalWithIntPart Frac2(int::Parse(num2->Text), int::Parse(denom2->Text), int::Parse(int2->Text));
+			RationalWithIntPart Easy = Frac2.Easy();
+			resInt->Text = (Easy.getInteger()).ToString();
+			resNum->Text = (Easy.getNumerator()).ToString();
+			resDenom->Text = (Easy.getDenominator()).ToString();
+		}
+
 	}
+    private: System::Void Integer_Click(System::Object^ sender, System::EventArgs^ e) {
+
+    }
 };
 }
