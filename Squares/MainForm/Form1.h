@@ -704,6 +704,41 @@ namespace CppCLRWinformsProjekt {
 
 	}
     private: System::Void Integer_Click(System::Object^ sender, System::EventArgs^ e) {
+		
+		if (checkBox1->Checked && checkBox2->Checked) {
+			MessageBox::Show(this, "Выберите только одну дробь!", "Сообщение",
+				MessageBoxButtons::OK, MessageBoxIcon::Warning);
+		}
+		else if (checkBox1->Checked) {
+			if (num1->Text == "" || denom1->Text == "")
+			{
+				MessageBox::Show(this, "Заполнены не все поля дроби!", "Сообщение",
+					MessageBoxButtons::OK, MessageBoxIcon::Warning);
+			}
+			else if (int1->Text == "") {
+				int1->Text = "0";
+			}
+			RationalWithIntPart Frac1(int::Parse(num1->Text), int::Parse(denom1->Text), int::Parse(int1->Text));
+			RationalWithIntPart Integer = Frac1.Integer();
+			resInt->Text = (Integer.getInteger()).ToString();
+			resNum->Text = (Integer.getNumerator()).ToString();
+			resDenom->Text = (Integer.getDenominator()).ToString();
+		}
+		else if (checkBox2->Checked) {
+			if (num2->Text == "" || denom2->Text == "")
+			{
+				MessageBox::Show(this, "Заполнены не все поля дроби!", "Сообщение",
+					MessageBoxButtons::OK, MessageBoxIcon::Warning);
+			}
+			else if (int2->Text == "") {
+				int2->Text = "0";
+			}
+			RationalWithIntPart Frac2(int::Parse(num2->Text), int::Parse(denom2->Text), int::Parse(int2->Text));
+			RationalWithIntPart Integer = Frac2.Integer();
+			resInt->Text = (Integer.getInteger()).ToString();
+			resNum->Text = (Integer.getNumerator()).ToString();
+			resDenom->Text = (Integer.getDenominator()).ToString();
+		}
 
     }
 };
