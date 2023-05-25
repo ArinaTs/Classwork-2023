@@ -6,6 +6,10 @@
 
 #include <windows.h>
 #include <conio.h>
+#include <ctime>
+#include <cstdlib>
+
+
 
 #define NUM_OF_CARDS 6
 
@@ -23,17 +27,8 @@
 #define KEY_ARROW_DOWN 80
 
 
-
-
-class Game {
-
-    void start() {
-        //вызывает функции (перевернуть карты, ...)
-    }
-};
-
 int main() {
-
+    srand(time(0));
     system("title Application");
 
     SetConsoleCP(1251);
@@ -55,7 +50,22 @@ int main() {
     int exit_flag;
     COORD cursorPos;
 
-    int cards[] = { 3, 8, 5, 3, 8, 5 };
+    int* cards;
+    cards = new int[100];
+    for (int i = 0; i < NUM_OF_CARDS/2; i++) {
+        cards[i] = 1 + rand() % 10;
+    }
+    for (int i = 0; i < NUM_OF_CARDS; i++) {
+        cards[i + NUM_OF_CARDS / 2] = cards[i];
+    }
+    
+    for (int i = 0; i < NUM_OF_CARDS; i++) {
+        std::swap(cards[i], cards[std::rand() % NUM_OF_CARDS]);
+    }
+   
+    
+   
+
 
     exit_flag = 0;
     choose_pos = 0;
@@ -145,9 +155,6 @@ int main() {
 
 
 
-
-
-
-
+    delete[] cards;
     return 0;
 }
