@@ -52,9 +52,9 @@ public:
 		return out;
 	}
 	void start() {
-		unsigned int start_time = clock();
+		int start_time = clock();
 		real = func(param1, param2);
-		unsigned int end_time = clock();
+		int end_time = clock();
 		timer = end_time - start_time;
 		if (real == expected) { status = PASSED; }
 	}
@@ -70,9 +70,9 @@ public:
 	Tests() : name("default"), size(0), count(0) {
 		all = nullptr;
 	}
-	Tests(std::string _name, size_t _size) {
+	Tests(std::string _name, Test<T>** _all) {
 		name = _name;
-		size = _size;
+		all = _all;
 	}
 	Tests(Tests& t) {
 		name = t.name;
