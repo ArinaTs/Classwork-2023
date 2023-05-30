@@ -1,5 +1,4 @@
 #pragma once
-#include "CTriangle.h"
 #include "Rational.h"
 
 namespace CppCLRWinformsProjekt {
@@ -154,6 +153,7 @@ namespace CppCLRWinformsProjekt {
 			this->groupBox1->TabIndex = 0;
 			this->groupBox1->TabStop = false;
 			this->groupBox1->Text = L"Главное меню";
+			this->groupBox1->Visible = false;
 			// 
 			// label4
 			// 
@@ -252,7 +252,6 @@ namespace CppCLRWinformsProjekt {
 			this->button3->TabIndex = 2;
 			this->button3->Text = L"Найти стороны треугольника";
 			this->button3->UseVisualStyleBackColor = true;
-			this->button3->Click += gcnew System::EventHandler(this, &Form1::button3_Click);
 			// 
 			// button2
 			// 
@@ -263,7 +262,6 @@ namespace CppCLRWinformsProjekt {
 			this->button2->TabIndex = 1;
 			this->button2->Text = L"Найти площадь";
 			this->button2->UseVisualStyleBackColor = true;
-			this->button2->Click += gcnew System::EventHandler(this, &Form1::button2_Click);
 			// 
 			// button1
 			// 
@@ -274,7 +272,6 @@ namespace CppCLRWinformsProjekt {
 			this->button1->TabIndex = 0;
 			this->button1->Text = L"Найти периметр";
 			this->button1->UseVisualStyleBackColor = true;
-			this->button1->Click += gcnew System::EventHandler(this, &Form1::button1_Click);
 			// 
 			// groupBox2
 			// 
@@ -315,6 +312,8 @@ namespace CppCLRWinformsProjekt {
 			this->checkBox2->Size = System::Drawing::Size(15, 14);
 			this->checkBox2->TabIndex = 23;
 			this->checkBox2->UseVisualStyleBackColor = true;
+			this->checkBox2->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &Form1::checkBox2_MouseClick);
+
 			// 
 			// checkBox1
 			// 
@@ -326,6 +325,7 @@ namespace CppCLRWinformsProjekt {
 			this->checkBox1->Size = System::Drawing::Size(15, 14);
 			this->checkBox1->TabIndex = 22;
 			this->checkBox1->UseVisualStyleBackColor = true;
+			this->checkBox1->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &Form1::checkBox1_MouseClick);
 			// 
 			// resInt
 			// 
@@ -519,6 +519,7 @@ namespace CppCLRWinformsProjekt {
 
 		}
 #pragma endregion
+		/*
 	private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e) {
 		if (textBox1->Text == "" || textBox2->Text == "" || textBox3->Text == "" ||
 			textBox4->Text == "" || textBox5->Text == "" || textBox6->Text == "")
@@ -568,7 +569,7 @@ namespace CppCLRWinformsProjekt {
 
 			label4->Text = "Результат: площадь равна " + S;
 		}
-	}
+	}*/
 	private: System::Void FindSum_Click(System::Object^ sender, System::EventArgs^ e) {
 		if (num1->Text == "" || denom1->Text == "" ||
 			num2->Text == "" || denom2->Text == "")
@@ -741,5 +742,14 @@ namespace CppCLRWinformsProjekt {
 		}
 
     }
+
+private: System::Void checkBox1_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+	checkBox2->Checked = false;
+	checkBox1->Checked = true;
+}
+private: System::Void checkBox2_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+	checkBox1->Checked = false;
+	checkBox2->Checked = true;
+}
 };
 }

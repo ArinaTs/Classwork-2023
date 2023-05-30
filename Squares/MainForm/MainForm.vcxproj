@@ -44,7 +44,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CLRSupport>true</CLRSupport>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -107,7 +107,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\itmm-2213-a\ArinaTs\source\Programming-2022-2023\Squares\CTriangle; C:\Users\itmm-2213-a\ArinaTs\source\Programming-2022-2023\Squares\Rational</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\s22380349\Documents\github\Classwork-2023\Squares\Rational</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
@@ -175,9 +175,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CTriangle\CTriangle.vcxproj">
-      <Project>{8dafcf9b-ea15-422b-8e49-8a8a23775749}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\Rational\Rational.vcxproj">
       <Project>{23b52184-28b0-413c-a6b6-0246b333a8cf}</Project>
     </ProjectReference>

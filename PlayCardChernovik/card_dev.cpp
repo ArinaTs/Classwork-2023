@@ -27,134 +27,147 @@
 #define KEY_ARROW_DOWN 80
 
 
-int main() {
-    srand(time(0));
-    system("title Application");
-
-    SetConsoleCP(1251);
-    SetConsoleOutputCP(1251);
-
+class Game {
     HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
-
-    CONSOLE_CURSOR_INFO structCursorInfo;
-    GetConsoleCursorInfo(hStdOut, &structCursorInfo);
-    structCursorInfo.bVisible = FALSE;
-    SetConsoleCursorInfo(hStdOut, &structCursorInfo);
-
-    SetConsoleTextAttribute(hStdOut, BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);
-
-    system("cls");
-
     int choose_pos;
     int iKey;
     int exit_flag;
     COORD cursorPos;
-
     int* cards;
-    cards = new int[100];
-    for (int i = 0; i < NUM_OF_CARDS/2; i++) {
-        cards[i] = 1 + rand() % 10;
+    int count;
+    short x, y;
+
+public:
+
+    Game() {
+        SetConsoleCP(1251);
+        SetConsoleOutputCP(1251);
+
+        CONSOLE_CURSOR_INFO structCursorInfo;
+        GetConsoleCursorInfo(hStdOut, &structCursorInfo);
+        structCursorInfo.bVisible = FALSE;
+        SetConsoleCursorInfo(hStdOut, &structCursorInfo);
+
+        SetConsoleTextAttribute(hStdOut, BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);
+
+        system("cls");
+
+        cards = new int[100];
+        for (int i = 0; i < NUM_OF_CARDS / 2; i++) {
+            cards[i] = 1 + rand() % 10;
+        }
+        for (int i = 0; i < NUM_OF_CARDS; i++) {
+            cards[i + NUM_OF_CARDS / 2] = cards[i];
+        }
+
+        for (int i = 0; i < NUM_OF_CARDS; i++) {
+            std::swap(cards[i], cards[std::rand() % NUM_OF_CARDS]);
+        }
+
+        exit_flag = 0;
+        choose_pos = 0;
+
+        printGameField();
+
+        int count = 0;
+        iKey = 67;
+        short x = 0, y = 1;
+        cursorPos = { x, y };
+        SetConsoleCursorPosition(hStdOut, cursorPos);
+
+        count = 0;
+        x = 0;  y = 1;
     }
-    for (int i = 0; i < NUM_OF_CARDS; i++) {
-        cards[i + NUM_OF_CARDS / 2] = cards[i];
+    void printGameField() {
+        for (int i = 0; i < NUM_OF_CARDS; i++)
+            std::cout << "[   ] ";
+
+        for (int i = 0; i < NUM_OF_CARDS; i++)
+            std::cout << "      ";
     }
-    
-    for (int i = 0; i < NUM_OF_CARDS; i++) {
-        std::swap(cards[i], cards[std::rand() % NUM_OF_CARDS]);
-    }
-   
-    
-   
-
-
-    exit_flag = 0;
-    choose_pos = 0;
-
-    for (int i = 0; i < NUM_OF_CARDS; i++)
-        std::cout << "[   ] ";
-
-    for (int i = 0; i < NUM_OF_CARDS; i++)
-        std::cout << "      ";
-
-    int count = 0;
-    iKey = 67;
-    short x = 0, y = 1;
-    cursorPos = { x, y };
-    SetConsoleCursorPosition(hStdOut, cursorPos);
-
-    while (1) {
-        int first, second;
-
-        int i = 0;
-        while (i < 2) {
-            iKey = 67;
-            while (iKey != KEY_ENTER) {
-                int prev_pos = choose_pos;
-                switch (iKey) {
-                case KEY_ARROW_LEFT:
-                    choose_pos--;
-                    break;
-                case KEY_ARROW_RIGHT:
-                    choose_pos++;
-                    break;
-                }
-
-                if (choose_pos < 0) { choose_pos = NUM_OF_CARDS - 1; }
-                if (choose_pos > NUM_OF_CARDS - 1) { choose_pos = 0; }
-
-                x = prev_pos * 6, y = 1;
-                cursorPos = { x, y };
-                SetConsoleCursorPosition(hStdOut, cursorPos);
-                std::cout << "      ";
-
-                x = choose_pos * 6, y = 1;
-                cursorPos = { x, y };
-                SetConsoleCursorPosition(hStdOut, cursorPos);
-                std::cout << "  ^   ";
-
-                iKey = _getch();
+    void chooseCard() {
+        iKey = 67;
+        while (iKey != KEY_ENTER) {
+            int prev_pos = choose_pos;
+            switch (iKey) {
+            case KEY_ARROW_LEFT:
+                choose_pos--;
+                break;
+            case KEY_ARROW_RIGHT:
+                choose_pos++;
+                break;
             }
 
-            x = choose_pos * 6, y = 0;
+            if (choose_pos < 0) { choose_pos = NUM_OF_CARDS - 1; }
+            if (choose_pos > NUM_OF_CARDS - 1) { choose_pos = 0; }
+
+            x = prev_pos * 6, y = 1;
             cursorPos = { x, y };
             SetConsoleCursorPosition(hStdOut, cursorPos);
-            std::cout << "[ " << cards[choose_pos] << " ] ";
+            std::cout << "      ";
 
-            if (i == 0) first = choose_pos;
-            else second = choose_pos;
-
-            i++;
-        }
-
-        if (cards[first] == cards[second]) {
-            count++;
-            if (count == NUM_OF_CARDS / 2) break;
-        }
-        else {
-            Sleep(2000);
-
-            x = first * 6, y = 0;
+            x = choose_pos * 6, y = 1;
             cursorPos = { x, y };
             SetConsoleCursorPosition(hStdOut, cursorPos);
-            std::cout << "[   ] ";
+            std::cout << "  ^   ";
 
-            x = second * 6, y = 0;
-            cursorPos = { x, y };
-            SetConsoleCursorPosition(hStdOut, cursorPos);
-            std::cout << "[   ] ";
+            iKey = _getch();
         }
     }
+    void openCard() {
+        x = choose_pos * 6, y = 0;
+        cursorPos = { x, y };
+        SetConsoleCursorPosition(hStdOut, cursorPos);
+        std::cout << "[ " << cards[choose_pos] << " ] ";
+    }
+    void closeCard(int card) {
+        x = card * 6, y = 0;
+        cursorPos = { x, y };
+        SetConsoleCursorPosition(hStdOut, cursorPos);
+        std::cout << "[   ] ";
+    }
+    void printFinalMessage() {
+        x = 0, y = 3;
+        cursorPos = { x, y };
+        SetConsoleCursorPosition(hStdOut, cursorPos);
+        std::cout << "WIN!!\n\n";
+        system("pause");
+    }
+    void start() {
+        while (1) {
+            int first, second;
 
+            int i = 0;
+            while (i < 2) { 
+                chooseCard();
+                openCard();
+                if (i == 0) first = choose_pos;
+                else second = choose_pos;
+                i++;
+            }
 
+            if (cards[first] == cards[second]) {
+                count++;
+                if (count == NUM_OF_CARDS / 2) break;
+            }
+            else {
+                Sleep(2000);
+                closeCard(first);
+                closeCard(second);
+            }
+        }
 
-    x = 0, y = 3;
-    cursorPos = { x, y };
-    SetConsoleCursorPosition(hStdOut, cursorPos);
-    std::cout << "WIN!!\n\n";
-    system("pause");
+        printFinalMessage();
+    }
+    ~Game() { delete[] cards; }
+};
 
+int main() {
+    srand(time(0));
+    system("Game Find Pairs");
+    
+    Game game;
+    game.start();
 
-
-    delete[] cards;
     return 0;
 }

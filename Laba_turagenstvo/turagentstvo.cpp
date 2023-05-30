@@ -24,6 +24,8 @@ public:
 	bool operator==(const FIO&p) const {
 		return (this->name == p.name && this->surname == p.surname && this->middle_name == p.middle_name);
 	}
+
+
 	bool operator<(const FIO& p) const {
 		if (this->surname < p.surname)
 		  return true;
@@ -43,28 +45,44 @@ std::istream& operator>>(std::istream& in, FIO& p) {
 };
 
 class Phone {
-	int number[11]; // 8 9 9 9 9 9 9 9 9 9 9
+	int* number; // 8 9 9 9 9 9 9 9 9 9 9
+	int count;
 public:
 	Phone() {
+		count = 11;
+		number = new int[11];
 		for (int i = 0; i < 11; i++) {
 			number[i] = 0;
 		}
 	}
 	Phone(long int _number) {
-		number[0] = _number / 10000000000 % 10;
-		number[1] = _number / 1000000000 % 10;
-		number[2] = _number / 100000000 % 10;
-		number[3] = _number / 10000000 % 10;
-		number[4] = _number / 1000000 % 10;
-		number[5] = _number / 100000 % 10;
-		number[6] = _number / 10000 % 10;
-		number[7] = _number / 1000 % 10;
-		number[8] = _number / 100 % 10;
-		number[9] = _number / 10 % 10;
-		number[10] = _number % 10;
+		CreatByLINT(_number);
+	}
+	void CreatByLINT(long int _number) {
+		count = 0;
+		int copy = _number;
+		for (int i = 0; number != 0; i++) {
+			copy /= 10;
+			count++;
+		}
+		copy = _number;
+		if (number != nullptr) delete[] number;
+		number = new int[count];
+		for (int i = 0; number != 0; i++) {
+			number[count - 1] = copy % 10;
+			copy /= 10;
+		}
+	}
+	Phone& operator=(const Phone& p) {
+		count = p.count;
+		for (int i = 0; i < count; i++) {
+			number[i] = p.number[i];
+		}
+		return* this;
 	}
 	~Phone() { 
-		delete[] number;
+		delete[] number; 
+		number = nullptr;
 	}
 
 	friend std::ostream& operator<<(std::ostream& out, const Phone& p); // +7(999)999-99-99
@@ -82,9 +100,9 @@ std::ostream& operator<<(std::ostream& out, const Phone& p) {
 	out << "-" << p.number[7] << p.number[8] << "-" << p.number[9] << p.number[10];
 }
 std::istream& operator>>(std::istream& in, Phone& p) {
-	for (int i = 0; i < 11; i++) {
-		in >> p.number[i];
-	}
+	long int _number;
+	in >> _number;
+	p.CreatByLINT(_number);
 }
 
 class Contact {
@@ -118,10 +136,7 @@ std::ostream& operator<<(std::ostream& out, const Contact& p) {
 std::istream& operator>>(std::istream& in, Contact& p) {
 	in >> p.phone >> p.country >> p.city >> p.street >> p.num_of_house;
 };
-Contact::Contact() {
-	for (int i = 0; i < 11; i++) {
-		phone[i] = 0;
-	}
+Contact::Contact() : phone(89999999999) {
 	country = "Russia";
 	city = "Moskow";
 	street = "Lenina";
@@ -134,9 +149,7 @@ Contact::Contact(long int _phone, int _size, std::string _country, std::string _
 	num_of_house = _num_of_house;
 }
 Contact::Contact(Contact &cont) {
-	for (int i = 0; i < 11; i++) {
-		phone[i] = cont.phone[i];
-	}
+	phone = cont.phone;
 	country = cont.country;
 	city = cont.city;
 	street = cont.street;
@@ -162,14 +175,16 @@ public:
 	bool operator>(const Contact& p) const {
 		return (this->adress.city > p.city);
 	};
+	friend class ClientBase;
 };
 
 class ClientBase {
 	Tourist* all;
 	int count;
-	Tourist& findInCity(Contact _adress) {
+	Tourist& findInCity(Contact _adress, FIO fio) {
 		for (int i = 0; i < count; i++) {
-			all[i].checkByCity(_adress);
+			if(all[i].nam_sur_mid == fio)
+				all[i].checkByCity(_adress);
 		}
 	}
 };
@@ -210,6 +225,9 @@ public:
 	};
 	friend std::ostream& operator<<(std::ostream& out, const Date&d);
 	friend std::istream& operator>>(std::istream& in, Date&d);
+	int getDay() const {
+		return day;
+	}
 };
 std::ostream& operator<<(std::ostream& out, const Date& d) {
 	out << "(" << d.day << ", " << d.month << ", " << d.year << ")";
@@ -240,6 +258,7 @@ public:
 	};
 	friend std::ostream& operator<<(std::ostream& out, const Travel& t);
 	friend std::istream& operator>>(std::istream& in, Travel& t);
+	friend class Travels;
 };
 
 
@@ -254,8 +273,8 @@ class Travels {
 	} // find(1, 1, 1111, NN)
 	Travel* find(int start, int _day, std::string _month, int _year, std::string _country_to) {
 		for (int i = 0; i < count; i++) {
-			if (Travel.date.day == _day && Travel.date.month == _month && Travel.date.year == _year) {
-				std::cout << _day << _month << _year << _country_to << _cost;
+			if (all[i]->date.getDay() == _day && Travel.date.month == _month && Travel.date.year == _year) { 
+				std::cout << all[i];
 			}
 		}
 	

@@ -24,7 +24,7 @@ public:
 	T(*func)(T, T);
 public:
 	Test() : name("default"), param1(NULL), param2(NULL), expected(NULL), real(NULL), status(0), timer(0), func(nullptr) {}
-	Test(std::string _name, T _param1, T _param2, T _expected, T(*_func)(T, T)) : name("default"), status(FAILED), timer(0), func(nullptr) {
+	Test(std::string _name, T(*_func)(T, T), T _param1, T _param2, T _expected) : name("default"), status(FAILED), timer(0), func(nullptr) {
 		func = _func;
 		name = _name;
 		param1 = _param1;
@@ -70,9 +70,10 @@ public:
 	Tests() : name("default"), size(0), count(0) {
 		all = nullptr;
 	}
-	Tests(std::string _name, Test<T>** _all) {
+	Tests(std::string _name, size_t _size) {
 		name = _name;
-		all = _all;
+		size = _size;
+		all = new Test<T>*[size];
 	}
 	Tests(Tests& t) {
 		name = t.name;
@@ -87,15 +88,8 @@ public:
 		delete[] all;
 	}
 	void createTest(std::string name, T(*_func)(T, T),  T tmp1, T tmp2, T expected) {
-
 		Test<T>* tmp = new Test<T>(name, _func, tmp1, tmp2, expected);
-		Test<T>** tmp_mass = new Test<T>*[count + 1];
-		for (int i = 0; i < count; i++) {
-			tmp_mass[i] = all[i];
-		}
-		tmp_mass[count] = tmp;
-		delete all;
-		all = tmp_mass;
+		all[count] = tmp;
 		count++;
 	}
 	void runAll() {
